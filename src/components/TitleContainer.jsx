@@ -7,7 +7,7 @@ import Logo from "./Logo"
 function TitleContainer({video , videoId = null}){
     const[user,setuser] = useState({})
     const[channelSubs,setChannelSubs] = useState(0)
-
+    
     const findUser = async()=>{
       try {
           const response = await getUserById(video.owner)

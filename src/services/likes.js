@@ -4,7 +4,9 @@ export const toggleLike = async(videoId)=>{
     try {
         const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/like/likeVideo/${videoId}`,{},
          {withCredentials:true}
+
         )
+        console.log(response)
         if(response.data.statusCode === 200){
             return true;
         }else{

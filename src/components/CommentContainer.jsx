@@ -1,8 +1,8 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { getUserById } from "../services/auth"
-
+import Logo from "./Logo"
 function commentContainer({comment}){
-      const[user,setuser] = ({})
+      const[user,setuser] = useState({})
       useEffect(()=>{
         const getuser = async ()=>{
             try {
@@ -14,6 +14,7 @@ function commentContainer({comment}){
         }
         getuser();
       },[comment])
+      console.log(user)
       return (
         <div className="-mt-3 flex w-fit flex-row items-start justify-start gap-2 rounded-xl p-2 text-white">
           <div className="min-w-10 h-full">

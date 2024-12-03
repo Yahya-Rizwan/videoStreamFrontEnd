@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { addComment } from "../services/comment";
 import { currentUser } from "../services/auth";
+import Button from "./Button";
 import Logo from "./Logo";
+import { useDispatch } from "react-redux";
 
 
 function AddComment({videoId,userId}){
+    const dispatch = useDispatch();
      const [user,setuser] = useState({})
      const {register,handleSubmit} = useForm();
 
@@ -18,18 +21,18 @@ function AddComment({videoId,userId}){
        }
      }
 
-     useEffect(()=>{
-        const getUser = async()=>{
-           try {
-             const response = currentUser();
-             setuser(response)
-         }
-           catch (error) {
-            console.log(error)
-           }
-        };
-        getUser();
-     },[userId])
+     useEffect(() => {
+      const getUser = async () => {
+          try {
+              await dispatch(currentUser()); // Dispatch the currentUser thunk action
+          } catch (error) {
+              console.log(error);
+          }
+      };
+      if (userId) {
+          getUser(); // Fetch user data when userId changes
+      }
+  }, [dispatch, userId]);
      return(
         <div>
             <div>

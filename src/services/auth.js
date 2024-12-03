@@ -34,8 +34,8 @@ export const register = async(data)=>{
 
 export const currentUser = createAsyncThunk("currentUser",async(data)=>{
      try {
-        const response =  await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/current-user`,{},{withCredentials:true})
-        return response.data
+        const response =  await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/users/current-user`,{},{withCredentials:true})
+        return response.data.data
      } catch (error) {
         throw new Error(error?.message)
      }
@@ -51,7 +51,7 @@ export const logOut = createAsyncThunk("logout", async () => {
 
 export const getUserById = async(userId)=>{
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/users/getUserById/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/getUserById/${userId}`);
         return response.data.data
     } catch (error) {
         throw new ApiError(400,"something went wrong")

@@ -4,7 +4,7 @@ import { isSubscribed, subscribe } from "../services/subscription";
 import { likeStatus as getLikeStatus, toggleLike, totalLikes } from "../services/likes";
 import { updateViews } from "../services/video";
 import Comment from "../components/Comment"
-import { addComment as AddComment} from "../services/comment";
+import AddComment from "../components/AddComment.jsx"
 import VideoDetails from "../components/VideoDetails";
 import TitleContainer  from "../components/TitleContainer";
 import { BiSolidLike } from "react-icons/bi";
@@ -12,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 import VideoContainer from "../components/VideoContainer";
 import { LuDot } from "react-icons/lu";
 import Button from "../components/Button";
+import { getAllVideos } from "../services/video";
 function VideoPage(){
     const location = useLocation();
     const {video} = location.state || {}
@@ -22,7 +23,8 @@ function VideoPage(){
 
     const subscriptionStatus = async()=>{
        try {
-         const response = await isSubscribed(video._id)
+         const response = await isSubscribed(video.owner)
+        
          setsubscribed(response) 
        } catch (error) {
           console.log(error.message)
@@ -31,14 +33,14 @@ function VideoPage(){
     const subscribeChannel = async()=>{
        try {
          const response = await subscribe(video.owner)
-         subscribeChannel();
+         subscriptionStatus();
        } catch (error) {
         console.log(error.message)
        }
     }
     const likeTheVideo = async()=>{
         try {
-            const response = await toggleLike(video.owner)
+            const response = await toggleLike(video._id)
             setlikeStatus((like)=>!like)
             noOfLikes();
         } catch (error) {
@@ -56,6 +58,7 @@ function VideoPage(){
     const checkLikeStatus = async()=>{
         try {
             const response = await getLikeStatus(video._id)
+            // console.log(response)
             setlikeStatus(response)
         } catch (error) {
             console.log(error)
@@ -69,7 +72,7 @@ function VideoPage(){
         }
     },[video])
 
-    useEffect(()=>{
+    
         useEffect(() => {
             subscriptionStatus();
             noOfLikes();
@@ -78,7 +81,7 @@ function VideoPage(){
               try {
                 const response = await getAllVideos();
                 setvideos(response.data);
-                console.log(response.data)
+          
               } catch (error) {
                 console.log(error);
               }
@@ -88,7 +91,7 @@ function VideoPage(){
             incrementViews();
           }, [video]);
         
-    })
+    
     return (
         <div className="w-full h-full items-center justify-center text-white">
           <div className="2xl:w-full 2xl:flex items-center justify-center 2xl:bg-black">
